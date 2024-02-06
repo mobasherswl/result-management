@@ -28,4 +28,10 @@ public class StudentController {
             @Valid @RequestBody final StudentDeleteRequest request) {
         return studentService.delete(request).map(ResponseEntity::ok);
     }
+
+    @PostMapping("/result")
+    public Mono<ResponseEntity<ResultResponse>> addResult(
+            @Valid @RequestBody final ResultAddRequest request) {
+        return studentService.addResult(request).map(ResponseEntity::ok);
+    }
 }

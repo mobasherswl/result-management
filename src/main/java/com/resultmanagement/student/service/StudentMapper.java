@@ -6,8 +6,8 @@ import com.resultmanagement.student.repo.Student;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface StudentServiceMapper {
+public interface StudentMapper {
     Student toStudent(StudentAddRequest studentServiceRequest);
 
-    StudentResponse toStudentServiceResponse(Student student);
+    StudentResponse toStudentResponse(Student student);
 }
