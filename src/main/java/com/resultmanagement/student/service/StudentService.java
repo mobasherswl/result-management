@@ -74,6 +74,10 @@ public class StudentService {
         return resultRepository.findAll().map(resultMapper::toResultResponse);
     }
 
+    public Mono<ResultResponse> retrieveResultByRollNumber(int rollNumber) {
+        return resultRepository.findById(rollNumber).map(resultMapper::toResultResponse);
+    }
+
     private Function<Student, Mono<? extends Student>> setStudentStatus(final Status status) {
         return student -> {
             student.setUpdatedOn(Instant.now());
