@@ -17,6 +17,7 @@ import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -67,6 +68,10 @@ public class StudentService {
                 .flatMap(saveResult(request))
                 .flatMap(result -> updateClassPositions(result).then(Mono.just(result)))
                 .map(resultMapper::toResultResponse);
+    }
+
+    public Flux<ResultResponse> retrieveAllResults() {
+        return resultRepository.findAll().map(resultMapper::toResultResponse);
     }
 
     private Function<Student, Mono<? extends Student>> setStudentStatus(final Status status) {
