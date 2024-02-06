@@ -1,5 +1,6 @@
 package com.resultmanagement.student.repo;
 
 public enum Status {
-    ACTIVE
+    ACTIVE,
+    DELETED
 }

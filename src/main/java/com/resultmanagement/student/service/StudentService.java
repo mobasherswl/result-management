@@ -1,6 +1,8 @@
 package com.resultmanagement.student.service;
 
 import com.resultmanagement.student.controller.StudentAddRequest;
+import com.resultmanagement.student.controller.StudentDeleteRequest;
+import com.resultmanagement.student.controller.StudentDeleteResponse;
 import com.resultmanagement.student.controller.StudentResponse;
 import com.resultmanagement.student.repo.Status;
 import com.resultmanagement.student.repo.Student;
@@ -24,8 +26,28 @@ public class StudentService {
         student.setUpdatedOn(student.getCreatedOn());
 
         return studentRepository
-                .findByRollNumberAndStatus(request.getRollNumber(), Status.ACTIVE)
+                .findByRollNumber(request.getRollNumber())
                 .switchIfEmpty(studentRepository.save(student))
                 .map(studentServiceMapper::toStudentServiceResponse);
+    }
+
+    public Mono<StudentDeleteResponse> delete(final StudentDeleteRequest request) {
+        return studentRepository
+                .findByRollNumberAndStatus(request.getRollNumber(), Status.ACTIVE)
+                .filter(student -> request.getGrade() == student.getGrade())
+                .flatMap(
+                        student -> {
+                            student.setUpdatedOn(Instant.now());
+                            student.setStatus(Status.DELETED);
+
+                            return studentRepository.save(student);
+                        })
+                .flatMap(
+                        student -> {
+                            final StudentDeleteResponse response = new StudentDeleteResponse();
+                            response.setDeleted(true);
+                            return Mono.just(response);
+                        })
+                .defaultIfEmpty(new StudentDeleteResponse());
     }
 }
