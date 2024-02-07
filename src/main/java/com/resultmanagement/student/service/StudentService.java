@@ -15,7 +15,6 @@ import com.resultmanagement.student.repo.StudentRepository;
 import java.time.Instant;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +28,6 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final ResultRepository resultRepository;
     private final ResultMapper resultMapper;
-    private final ReactiveMongoTemplate mongoTemplate;
 
     public Mono<StudentResponse> addStudent(final StudentAddRequest request) {
         final Student student = studentMapper.toStudent(request);
