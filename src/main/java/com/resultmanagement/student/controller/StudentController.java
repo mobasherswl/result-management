@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,29 +27,34 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<StudentResponse>> addStudent(
             @Valid @RequestBody final StudentAddRequest request) {
         return studentService.addStudent(request).map(ResponseEntity::ok);
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<StudentDeleteResponse>> deleteStudent(
             @Valid @RequestBody final StudentDeleteRequest request) {
         return studentService.delete(request).map(ResponseEntity::ok);
     }
 
     @PostMapping("/result")
+    @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<ResultResponse>> addResult(
             @Valid @RequestBody final ResultAddRequest request) {
         return studentService.addResult(request).map(ResponseEntity::ok);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Flux<ResultResponse>> getAllResults() {
         return ResponseEntity.ok(studentService.retrieveAllResults());
     }
 
     @GetMapping("/result/{roll-number}")
+    @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<ResultResponse>> getResultByRollNumber(
             @PathVariable("roll-number") @NotNull @Min(1) @Max(100) final Integer rollNumber) {
         return studentService.retrieveResultByRollNumber(rollNumber).map(ResponseEntity::ok);

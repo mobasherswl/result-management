@@ -78,6 +78,14 @@ public class StudentService {
         return resultRepository.findById(rollNumber).map(resultMapper::toResultResponse);
     }
 
+    public Mono<Void> deleteAllStudents() {
+        return studentRepository.deleteAll();
+    }
+
+    public Mono<Void> deleteAllResults() {
+        return resultRepository.deleteAll();
+    }
+
     private Function<Student, Mono<? extends Student>> setStudentStatus(final Status status) {
         return student -> {
             student.setUpdatedOn(Instant.now());

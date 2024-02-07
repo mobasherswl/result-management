@@ -7,3 +7,9 @@ spring:
             authentication-database: admin
 #            username: root
 #            password: root
+    webflux:
+        problemdetails:
+            enabled: true
+
+jwt:
+    secretKey: ecf1222c-88fd-47f3-988f-bdd78bade1ad
