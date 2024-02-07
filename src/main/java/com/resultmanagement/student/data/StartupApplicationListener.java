@@ -1,5 +1,6 @@
 package com.resultmanagement.student.data;
 
+import com.resultmanagement.student.controller.ResultAddRequest;
 import com.resultmanagement.student.controller.StudentAddRequest;
 import com.resultmanagement.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,21 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         studentService.addStudent(getStudentAddRequest("name 1", 1, 1, "father 1")).block();
         studentService.addStudent(getStudentAddRequest("name 2", 1, 2, "father 2")).block();
         studentService.addStudent(getStudentAddRequest("name 3", 1, 3, "father 3")).block();
+
+        studentService.addResult(getResultAddRequest(1, 80, 100)).block();
+        studentService.addResult(getResultAddRequest(2, 70, 100)).block();
+        studentService.addResult(getResultAddRequest(3, 75, 100)).block();
+    }
+
+    private ResultAddRequest getResultAddRequest(
+            final int rollNumber, final int obtainedMarks, final int totalMarks) {
+        final ResultAddRequest request = new ResultAddRequest();
+
+        request.setRollNumber(rollNumber);
+        request.setObtainedMarks(obtainedMarks);
+        request.setTotalMarks(totalMarks);
+
+        return request;
     }
 
     private StudentAddRequest getStudentAddRequest(
